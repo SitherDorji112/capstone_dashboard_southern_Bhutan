@@ -1,0 +1,340 @@
+{
+    "district": "Chhukha",
+    "chart_id": "historical_rainfall_rainydays",
+    "title": "Historical Rainfall and Rainy Days, 1996–2025",
+    "period": "historical",
+    "category": "rainfall",
+    "kpis": {
+        "rainfall": {
+            "trend": "no trend",
+            "p_value": 0.2844114676220473,
+            "sen_slope": 46.36428571428568,
+            "unit": "mm/year"
+        }
+    },
+    "interpretation": "This graph compares annual rainfall totals with the number of rainy days in Chhukha from 1996 to 2025. The rainfall series shows strong year-to-year fluctuation, while the number of rainy days also varies across the period, indicating that wetter years do not always occur with the same annual frequency of rainy days.",
+    "figure": {
+        "data": [
+            {
+                "hovertemplate": "Rainy days<br>Year: %{x}<br>Days: %{y}<extra></extra>",
+                "legendrank": 3,
+                "marker": {
+                    "color": "skyblue",
+                    "opacity": 0.7
+                },
+                "name": "Rainy days",
+                "x": [
+                    1996,
+                    1997,
+                    1998,
+                    1999,
+                    2000,
+                    2001,
+                    2002,
+                    2003,
+                    2004,
+                    2005,
+                    2006,
+                    2007,
+                    2008,
+                    2009,
+                    2010,
+                    2011,
+                    2012,
+                    2013,
+                    2014,
+                    2015,
+                    2016,
+                    2017,
+                    2018,
+                    2019,
+                    2020,
+                    2021,
+                    2022,
+                    2023,
+                    2024,
+                    2025
+                ],
+                "y": [
+                    154,
+                    155,
+                    162,
+                    125,
+                    168,
+                    163,
+                    170,
+                    183,
+                    162,
+                    133,
+                    120,
+                    173,
+                    131,
+                    135,
+                    134,
+                    102,
+                    137,
+                    100,
+                    225,
+                    226,
+                    133,
+                    172,
+                    171,
+                    170,
+                    193,
+                    171,
+                    207,
+                    167,
+                    175,
+                    182
+                ],
+                "type": "bar",
+                "xaxis": "x",
+                "yaxis": "y"
+            },
+            {
+                "hovertemplate": "Rain (mm)<br>Year: %{x}<br>Value: %{y:.2f} mm<extra></extra>",
+                "legendrank": 1,
+                "line": {
+                    "color": "blue",
+                    "width": 1
+                },
+                "marker": {
+                    "color": "blue",
+                    "size": 4,
+                    "symbol": "circle"
+                },
+                "mode": "lines+markers",
+                "name": "Rainfall (mm)",
+                "x": [
+                    1996,
+                    1997,
+                    1998,
+                    1999,
+                    2000,
+                    2001,
+                    2002,
+                    2003,
+                    2004,
+                    2005,
+                    2006,
+                    2007,
+                    2008,
+                    2009,
+                    2010,
+                    2011,
+                    2012,
+                    2013,
+                    2014,
+                    2015,
+                    2016,
+                    2017,
+                    2018,
+                    2019,
+                    2020,
+                    2021,
+                    2022,
+                    2023,
+                    2024,
+                    2025
+                ],
+                "y": [
+                    3554.8,
+                    4376.6,
+                    6699.0,
+                    4547.2,
+                    6106.4,
+                    4434.5,
+                    4690.4,
+                    4739.1,
+                    5034.8,
+                    2606.0,
+                    1975.9,
+                    3814.6,
+                    1681.2,
+                    3175.8,
+                    4203.9,
+                    3061.1,
+                    2373.83,
+                    2979.83,
+                    1277.69,
+                    2676.35,
+                    3291.04,
+                    5015.22,
+                    6145.7,
+                    5463.6,
+                    4681.89,
+                    4266.15,
+                    8255.8,
+                    6549.1,
+                    6713.6,
+                    5402.31
+                ],
+                "type": "scatter",
+                "xaxis": "x",
+                "yaxis": "y2"
+            },
+            {
+                "hoverinfo": "skip",
+                "legendrank": 2,
+                "line": {
+                    "color": "black",
+                    "dash": "dash",
+                    "width": 1
+                },
+                "mode": "lines",
+                "name": "Trend line",
+                "x": [
+                    1996,
+                    1997,
+                    1998,
+                    1999,
+                    2000,
+                    2001,
+                    2002,
+                    2003,
+                    2004,
+                    2005,
+                    2006,
+                    2007,
+                    2008,
+                    2009,
+                    2010,
+                    2011,
+                    2012,
+                    2013,
+                    2014,
+                    2015,
+                    2016,
+                    2017,
+                    2018,
+                    2019,
+                    2020,
+                    2021,
+                    2022,
+                    2023,
+                    2024,
+                    2025
+                ],
+                "y": [
+                    3690.0061290322774,
+                    3733.898602892121,
+                    3777.7910767519643,
+                    3821.6835506118077,
+                    3865.576024471651,
+                    3909.4684983314946,
+                    3953.3609721913526,
+                    3997.253446051196,
+                    4041.1459199110395,
+                    4085.038393770883,
+                    4128.930867630726,
+                    4172.82334149057,
+                    4216.715815350413,
+                    4260.608289210257,
+                    4304.5007630701,
+                    4348.393236929944,
+                    4392.285710789787,
+                    4436.178184649631,
+                    4480.070658509474,
+                    4523.9631323693175,
+                    4567.855606229161,
+                    4611.748080089004,
+                    4655.640553948848,
+                    4699.533027808691,
+                    4743.425501668535,
+                    4787.317975528393,
+                    4831.210449388236,
+                    4875.10292324808,
+                    4918.995397107923,
+                    4962.8878709677665
+                ],
+                "type": "scatter",
+                "xaxis": "x",
+                "yaxis": "y2"
+            }
+        ],
+        "layout": {
+            "template": {
+                "data": {
+                    "scatter": [
+                        {
+                            "type": "scatter"
+                        }
+                    ]
+                }
+            },
+            "xaxis": {
+                "anchor": "y",
+                "domain": [
+                    0.0,
+                    0.94
+                ],
+                "title": {
+                    "text": "Year"
+                },
+                "showgrid": false,
+                "zeroline": false,
+                "showline": true,
+                "linecolor": "black",
+                "ticks": "outside",
+                "tickcolor": "black"
+            },
+            "yaxis": {
+                "anchor": "x",
+                "domain": [
+                    0.0,
+                    1.0
+                ],
+                "title": {
+                    "text": "Rainy Days"
+                },
+                "showgrid": false,
+                "zeroline": false,
+                "showline": true,
+                "linecolor": "black",
+                "ticks": "outside",
+                "tickcolor": "black"
+            },
+            "yaxis2": {
+                "anchor": "x",
+                "overlaying": "y",
+                "side": "right",
+                "title": {
+                    "text": "Rainfall (mm)"
+                },
+                "showgrid": false,
+                "zeroline": false,
+                "showline": true,
+                "linecolor": "black",
+                "ticks": "outside",
+                "tickcolor": "black"
+            },
+            "font": {
+                "color": "black",
+                "size": 11
+            },
+            "legend": {
+                "orientation": "h",
+                "yanchor": "top",
+                "y": -0.16,
+                "xanchor": "center",
+                "x": 0.5,
+                "bgcolor": "rgba(0,0,0,0)",
+                "borderwidth": 0
+            },
+            "margin": {
+                "l": 60,
+                "r": 60,
+                "t": 30,
+                "b": 90
+            },
+            "title": {},
+            "width": 1000,
+            "height": 500,
+            "hovermode": "x unified",
+            "dragmode": "pan",
+            "plot_bgcolor": "white",
+            "paper_bgcolor": "white",
+            "bargap": 0.25
+        }
+    }
+}

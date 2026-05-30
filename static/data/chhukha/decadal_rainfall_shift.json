@@ -1,0 +1,379 @@
+{
+    "district": "Chhukha",
+    "chart_id": "monthly_rainfall_shift",
+    "title": "Monthly Rainfall Shift: Historical vs Projected",
+    "period": "historical_vs_projected",
+    "category": "rainfall",
+    "kpis": {
+        "average_shift_mm": 51.358592050808504,
+        "highest_projected_rainfall": {
+            "month": "Aug",
+            "value": 1018.181545641218,
+            "unit": "mm"
+        },
+        "highest_percentage_change": {
+            "month": "Nov",
+            "value": 1472.0288096668398,
+            "unit": "%"
+        },
+        "lowest_percentage_change": {
+            "month": "May",
+            "value": -40.12244639089207,
+            "unit": "%"
+        }
+    },
+    "monthly_table": [
+        {
+            "month_name": "Jan",
+            "1996-2025": 16.369,
+            "2026-2055": 25.3625,
+            "shift_mm": 8.9935,
+            "pct_change": 54.9423
+        },
+        {
+            "month_name": "Feb",
+            "1996-2025": 31.6923,
+            "2026-2055": 28.0601,
+            "shift_mm": -3.6322,
+            "pct_change": -11.4609
+        },
+        {
+            "month_name": "Mar",
+            "1996-2025": 96.7267,
+            "2026-2055": 101.4768,
+            "shift_mm": 4.7502,
+            "pct_change": 4.9109
+        },
+        {
+            "month_name": "Apr",
+            "1996-2025": 235.526,
+            "2026-2055": 192.1839,
+            "shift_mm": -43.3421,
+            "pct_change": -18.4022
+        },
+        {
+            "month_name": "May",
+            "1996-2025": 449.1237,
+            "2026-2055": 268.9243,
+            "shift_mm": -180.1994,
+            "pct_change": -40.1224
+        },
+        {
+            "month_name": "Jun",
+            "1996-2025": 877.144,
+            "2026-2055": 569.1198,
+            "shift_mm": -308.0242,
+            "pct_change": -35.1167
+        },
+        {
+            "month_name": "Jul",
+            "1996-2025": 996.4813,
+            "2026-2055": 835.0274,
+            "shift_mm": -161.454,
+            "pct_change": -16.2024
+        },
+        {
+            "month_name": "Aug",
+            "1996-2025": 830.9033,
+            "2026-2055": 1018.1815,
+            "shift_mm": 187.2782,
+            "pct_change": 22.5391
+        },
+        {
+            "month_name": "Sep",
+            "1996-2025": 535.046,
+            "2026-2055": 897.7715,
+            "shift_mm": 362.7255,
+            "pct_change": 67.7933
+        },
+        {
+            "month_name": "Oct",
+            "1996-2025": 229.3937,
+            "2026-2055": 638.8941,
+            "shift_mm": 409.5004,
+            "pct_change": 178.5143
+        },
+        {
+            "month_name": "Nov",
+            "1996-2025": 18.6433,
+            "2026-2055": 293.0786,
+            "shift_mm": 274.4352,
+            "pct_change": 1472.0288
+        },
+        {
+            "month_name": "Dec",
+            "1996-2025": 9.3977,
+            "2026-2055": 74.6696,
+            "shift_mm": 65.272,
+            "pct_change": 694.5552
+        }
+    ],
+    "interpretation": "This graph compares monthly average rainfall in Chhukha between the historical period (1996–2025) and the projected period (2026–2055). The projected pattern suggests lower rainfall in several pre-monsoon and early monsoon months, but higher rainfall in late monsoon and post-monsoon months, indicating a possible seasonal shift in rainfall concentration.",
+    "figure": {
+        "data": [
+            {
+                "hovertemplate": "Percentage change<br>Month: %{x}<br>Value: %{y:.3f}%<extra></extra>",
+                "legendrank": 3,
+                "marker": {
+                    "color": "green",
+                    "opacity": 0.8
+                },
+                "name": "Percentage change (%)",
+                "width": 0.35,
+                "x": [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec"
+                ],
+                "y": [
+                    54.942349922092404,
+                    -11.460905400965741,
+                    4.910914149694041,
+                    -18.40224546323709,
+                    -40.12244639089207,
+                    -35.116724038279585,
+                    -16.202407346159053,
+                    22.539109520307367,
+                    67.79333099159788,
+                    178.5142568993775,
+                    1472.0288096668398,
+                    694.5551584342633
+                ],
+                "type": "bar",
+                "xaxis": "x",
+                "yaxis": "y2"
+            },
+            {
+                "hovertemplate": "Historical<br>Month: %{x}<br>Rainfall: %{y:.3f} mm<extra></extra>",
+                "legendrank": 1,
+                "line": {
+                    "color": "blue",
+                    "width": 1.4
+                },
+                "marker": {
+                    "color": "blue",
+                    "size": 4,
+                    "symbol": "circle"
+                },
+                "mode": "lines+markers",
+                "name": "Historical",
+                "x": [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec"
+                ],
+                "y": [
+                    16.369,
+                    31.692333333333334,
+                    96.72666666666667,
+                    235.52599999999998,
+                    449.1236666666666,
+                    877.144,
+                    996.4813333333334,
+                    830.9033333333334,
+                    535.0459999999999,
+                    229.39366666666666,
+                    18.64333333333333,
+                    9.397666666666668
+                ],
+                "type": "scatter",
+                "xaxis": "x",
+                "yaxis": "y"
+            },
+            {
+                "hovertemplate": "Forecast<br>Month: %{x}<br>Rainfall: %{y:.3f} mm<extra></extra>",
+                "legendrank": 2,
+                "line": {
+                    "color": "red",
+                    "dash": "dash",
+                    "width": 1.4
+                },
+                "marker": {
+                    "color": "red",
+                    "size": 4,
+                    "symbol": "circle"
+                },
+                "mode": "lines+markers",
+                "name": "Forecast",
+                "x": [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec"
+                ],
+                "y": [
+                    25.362513258747306,
+                    28.060104990641268,
+                    101.4768302265274,
+                    192.1839273502562,
+                    268.9242642795245,
+                    569.1197621016729,
+                    835.0273685782297,
+                    1018.181545641218,
+                    897.7715057373047,
+                    638.8940660909017,
+                    293.0785710822211,
+                    74.66964527245729
+                ],
+                "type": "scatter",
+                "xaxis": "x",
+                "yaxis": "y"
+            },
+            {
+                "hoverinfo": "skip",
+                "line": {
+                    "color": "gray",
+                    "width": 0.5
+                },
+                "mode": "lines",
+                "showlegend": false,
+                "x": [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec"
+                ],
+                "y": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "type": "scatter",
+                "xaxis": "x",
+                "yaxis": "y2"
+            }
+        ],
+        "layout": {
+            "template": {
+                "data": {
+                    "scatter": [
+                        {
+                            "type": "scatter"
+                        }
+                    ]
+                }
+            },
+            "xaxis": {
+                "anchor": "y",
+                "domain": [
+                    0.0,
+                    0.94
+                ],
+                "title": {
+                    "text": "Month"
+                },
+                "showgrid": false,
+                "zeroline": false,
+                "showline": true,
+                "linecolor": "black",
+                "ticks": "outside",
+                "tickcolor": "black",
+                "tickangle": 35
+            },
+            "yaxis": {
+                "anchor": "x",
+                "domain": [
+                    0.0,
+                    1.0
+                ],
+                "title": {
+                    "text": "Rainfall (mm)"
+                },
+                "showgrid": false,
+                "zeroline": false,
+                "showline": true,
+                "linecolor": "black",
+                "ticks": "outside",
+                "tickcolor": "black"
+            },
+            "yaxis2": {
+                "anchor": "x",
+                "overlaying": "y",
+                "side": "right",
+                "title": {
+                    "text": "Percentage Change (%)"
+                },
+                "showgrid": false,
+                "zeroline": false,
+                "showline": true,
+                "linecolor": "black",
+                "ticks": "outside",
+                "tickcolor": "black",
+                "range": [
+                    -200,
+                    1500
+                ]
+            },
+            "font": {
+                "color": "black",
+                "size": 11
+            },
+            "legend": {
+                "orientation": "h",
+                "yanchor": "top",
+                "y": -0.12,
+                "xanchor": "center",
+                "x": 0.5,
+                "bgcolor": "rgba(0,0,0,0)",
+                "borderwidth": 0
+            },
+            "margin": {
+                "l": 60,
+                "r": 70,
+                "t": 30,
+                "b": 90
+            },
+            "title": {},
+            "width": 1000,
+            "height": 500,
+            "hovermode": "x unified",
+            "dragmode": "pan",
+            "plot_bgcolor": "white",
+            "paper_bgcolor": "white",
+            "bargap": 0.35
+        }
+    }
+}

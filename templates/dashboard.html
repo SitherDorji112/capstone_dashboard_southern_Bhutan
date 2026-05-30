@@ -1,0 +1,220 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climate Dashboard - Southern Bhutan</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <button class="mobile-menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">
+            ☰
+        </button>
+        <div class="nav-brand">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" class="navbar-logo">
+            <div class="logo-icon">☁️</div>
+            <h1>Historical and Projected Climate Dashboard for Southern Bhutan</h1>
+        </div>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/dashboard/" class="active">Dashboard</a>
+            <a href="/about/">About Us</a>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Left Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-map">
+                <img src="{% static 'images/southern_bhutan_map.png' %}" alt="Southern Bhutan Map" class="sidebar-map-image">
+                <p class="sidebar-map-description">The highlighted blue areas show the five southern Dzongkhags included in this study.</p>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Dzongkhags</h3>
+                <div class="dzongkhag-buttons">
+                    <button class="district-btn" data-district="chhukha">Chhukha</button>
+                    <button class="district-btn active" data-district="pemagatshel">Pemagatshel</button>
+                    <button class="district-btn" data-district="samdrup_jongkhar">Samdrup Jongkhar</button>
+                    <button class="district-btn" data-district="samtse">Samtse</button>
+                    <button class="district-btn" data-district="sarpang">Sarpang</button>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Overall Analysis</h3>
+                <button id="extreme-events-btn" class="extreme-btn">Extreme Events</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Selected Dzongkhag Header -->
+            <section class="selected-dzongkhag-banner" id="regularDzongkhagHeader">
+                <div class="banner-text">
+                    <div class="dzongkhag-banner-heading">
+                        <p class="banner-label" id="header-label">SELECTED DZONGKHAG</p>
+                        <h2 class="banner-title" id="selected-district-name">PEMAGATSHEL</h2>
+                    </div>
+                    <p class="banner-description" id="district-description">Climate information and analysis</p>
+                    <div class="banner-meta-grid" id="district-info-cards">
+                        <div class="banner-meta-item">
+                            <span class="meta-icon" aria-hidden="true">&#9968;&#65039;</span>
+                            <span class="meta-label">Elevation:</span>
+                            <span class="card-value" id="district-elevation">1,000–3,500 m asl</span>
+                        </div>
+                        <div class="banner-meta-item">
+                            <span class="meta-icon" aria-hidden="true">&#128506;&#65039;</span>
+                            <span class="meta-label">Area:</span>
+                            <span class="card-value" id="district-area">1,022.10 km²</span>
+                        </div>
+                        <div class="banner-meta-item">
+                            <span class="meta-icon" aria-hidden="true">&#128205;</span>
+                            <span class="meta-label">Latitude:</span>
+                            <span class="card-value" id="district-latitude">27.03°</span>
+                        </div>
+                        <div class="banner-meta-item">
+                            <span class="meta-icon" aria-hidden="true">&#129517;</span>
+                            <span class="meta-label">Longitude:</span>
+                            <span class="card-value" id="district-longitude">91.44°</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner-image-wrap">
+                    <img src="{% static 'images/pemagatshel_dzong.png' %}" alt="Selected Dzongkhag image" class="banner-image" id="district-header-image">
+                </div>
+            </section>
+
+            <!-- Analysis Tabs -->
+            <div id="analysis-tabs-wrapper" class="analysis-tabs-wrapper">
+                <section class="analysis-tabs" id="analysisTabs">
+                    <button id="temperature-tab" class="tab-btn analysis-tab active" data-tab="temperature">
+                        <span class="tab-icon" aria-hidden="true">&#127777;&#65039;</span>
+                        <span>Temperature Analysis</span>
+                    </button>
+                    <button id="rainfall-tab" class="tab-btn analysis-tab" data-tab="rainfall">
+                        <span class="tab-icon" aria-hidden="true">&#127783;&#65039;</span>
+                        <span>Rainfall Analysis</span>
+                    </button>
+                </section>
+            </div>
+
+            <!-- Temperature Analysis Section -->
+            <section id="temperature-analysis" class="analysis-section active">
+                <!-- Historical Temperature -->
+                <div class="graph-card">
+                    <h3 id="historical-temp-title" class="graph-title">Historical Temperature Trend</h3>
+                    <div class="kpi-cards" id="historical-temp-kpis"></div>
+                    <div id="historical-temp-plot" class="plotly-plot"></div>
+                    <p id="historical-temp-interpretation" class="graph-interpretation"></p>
+                </div>
+
+                <!-- Projected Tmax -->
+                <div class="graph-card">
+                    <h3 id="projected-tmax-title" class="graph-title">Projected Maximum Temperature</h3>
+                    <div class="kpi-cards" id="projected-tmax-kpis"></div>
+                    <div id="projected-tmax-plot" class="plotly-plot"></div>
+                    <p id="projected-tmax-interpretation" class="graph-interpretation"></p>
+                </div>
+
+                <!-- Projected Tmin -->
+                <div class="graph-card">
+                    <h3 id="projected-tmin-title" class="graph-title">Projected Minimum Temperature</h3>
+                    <div class="kpi-cards" id="projected-tmin-kpis"></div>
+                    <div id="projected-tmin-plot" class="plotly-plot"></div>
+                    <p id="projected-tmin-interpretation" class="graph-interpretation"></p>
+                </div>
+
+                <!-- Decadal Temperature Shift -->
+                <div class="graph-card">
+                    <h3 id="decadal-temp-title" class="graph-title">Decadal Temperature Shift</h3>
+                    <div class="kpi-cards" id="decadal-temp-kpis"></div>
+                    <div id="decadal-temp-plot" class="plotly-plot"></div>
+                    <p id="decadal-temp-interpretation" class="graph-interpretation"></p>
+                </div>
+            </section>
+
+            <!-- Rainfall Analysis Section -->
+            <section id="rainfall-analysis" class="analysis-section" style="display: none;">
+                <!-- Historical Rainfall -->
+                <div class="graph-card">
+                    <h3 id="historical-rainfall-title" class="graph-title">Historical Rainfall and Rainy Days</h3>
+                    <div class="kpi-cards" id="historical-rainfall-kpis"></div>
+                    <div id="historical-rainfall-plot" class="plotly-plot"></div>
+                    <p id="historical-rainfall-interpretation" class="graph-interpretation"></p>
+                </div>
+
+                <!-- Projected Rainfall -->
+                <div class="graph-card">
+                    <h3 id="projected-rainfall-title" class="graph-title">Projected Rainfall</h3>
+                    <div class="kpi-cards" id="projected-rainfall-kpis"></div>
+                    <div id="projected-rainfall-plot" class="plotly-plot"></div>
+                    <p id="projected-rainfall-interpretation" class="graph-interpretation"></p>
+                </div>
+
+                <!-- Decadal Rainfall Shift -->
+                <div class="graph-card">
+                    <h3 id="decadal-rainfall-title" class="graph-title">Decadal Rainfall Shift</h3>
+                    <div class="kpi-cards" id="decadal-rainfall-kpis"></div>
+                    <div id="decadal-rainfall-plot" class="plotly-plot"></div>
+                    <p id="decadal-rainfall-interpretation" class="graph-interpretation"></p>
+                </div>
+            </section>
+
+            <!-- Extreme Events Section -->
+            <section id="extreme-events-section" class="analysis-section" style="display: none;">
+                <!-- Extreme Events Header -->
+                <section class="overall-extreme-banner">
+                    <div class="extreme-header-text">
+                        <p class="extreme-header-label">OVERALL ANALYSIS</p>
+                        <h2 class="extreme-header-title">OVERALL EXTREME EVENTS</h2>
+                        <p class="extreme-header-description">This section compares extreme daily rainfall, maximum temperature, and minimum temperature events across the five southern Dzongkhags.</p>
+                        <div id="extreme-summary-cards"></div>
+                    </div>
+                    <div class="extreme-header-image-wrap">
+                        <img src="{% static 'images/home_background.png' %}" alt="Extreme Events" class="extreme-header-image">
+                    </div>
+                </section>
+
+                <!-- Extreme Daily Rainfall Events -->
+                <div class="graph-card">
+                    <h3 id="extreme-rainfall-title" class="graph-title">Extreme Daily Rainfall Events and Dates Across Five Dzongkhags</h3>
+                    <div class="extreme-summary" id="extreme-rainfall-summary"></div>
+                    <div id="extreme-rainfall-plot" class="plotly-plot"></div>
+                    <p id="extreme-rainfall-interpretation" class="graph-interpretation"></p>
+                </div>
+
+                <!-- Extreme Tmax -->
+                <div class="graph-card">
+                    <h3 id="extreme-tmax-title" class="graph-title">Extreme Daily Maximum Temperature Across Five Dzongkhags</h3>
+                    <div class="extreme-summary" id="extreme-tmax-summary"></div>
+                    <div id="extreme-tmax-plot" class="plotly-plot"></div>
+                    <p id="extreme-tmax-interpretation" class="graph-interpretation"></p>
+                </div>
+
+                <!-- Extreme Tmin -->
+                <div class="graph-card">
+                    <h3 id="extreme-tmin-title" class="graph-title">Extreme Daily Minimum Temperature Across Five Dzongkhags</h3>
+                    <div class="extreme-summary" id="extreme-tmin-summary"></div>
+                    <div id="extreme-tmin-plot" class="plotly-plot"></div>
+                    <p id="extreme-tmin-interpretation" class="graph-interpretation"></p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Historical and Projected Climate Dashboard for Southern Bhutan. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/dashboard.js' %}"></script>
+</body>
+</html>

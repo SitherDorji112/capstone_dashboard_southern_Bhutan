@@ -1,0 +1,370 @@
+{
+    "district": "Chhukha",
+    "chart_id": "monthly_temperature_shift",
+    "title": "Monthly Temperature Shift: Historical vs Projected",
+    "period": "historical_vs_projected",
+    "category": "temperature",
+    "kpis": {
+        "average_shift_c": -0.06398335310510934,
+        "highest_percentage_change": {
+            "month": "Sep",
+            "value": 0.8658254997415208,
+            "unit": "%"
+        },
+        "lowest_percentage_change": {
+            "month": "May",
+            "value": -2.2428471752354047,
+            "unit": "%"
+        }
+    },
+    "monthly_table": [
+        {
+            "month_name": "Jan",
+            "1996-2025": 18.3913,
+            "2026-2055": 18.5119,
+            "shift_c": 0.1206,
+            "pct_change": 0.6558
+        },
+        {
+            "month_name": "Feb",
+            "1996-2025": 20.5859,
+            "2026-2055": 20.623,
+            "shift_c": 0.0371,
+            "pct_change": 0.1804
+        },
+        {
+            "month_name": "Mar",
+            "1996-2025": 23.5565,
+            "2026-2055": 23.5419,
+            "shift_c": -0.0145,
+            "pct_change": -0.0618
+        },
+        {
+            "month_name": "Apr",
+            "1996-2025": 25.2521,
+            "2026-2055": 25.4692,
+            "shift_c": 0.2171,
+            "pct_change": 0.8598
+        },
+        {
+            "month_name": "May",
+            "1996-2025": 26.3722,
+            "2026-2055": 25.7807,
+            "shift_c": -0.5915,
+            "pct_change": -2.2428
+        },
+        {
+            "month_name": "Jun",
+            "1996-2025": 27.1408,
+            "2026-2055": 27.2576,
+            "shift_c": 0.1168,
+            "pct_change": 0.4303
+        },
+        {
+            "month_name": "Jul",
+            "1996-2025": 27.3064,
+            "2026-2055": 27.0041,
+            "shift_c": -0.3024,
+            "pct_change": -1.1073
+        },
+        {
+            "month_name": "Aug",
+            "1996-2025": 27.6337,
+            "2026-2055": 27.7599,
+            "shift_c": 0.1261,
+            "pct_change": 0.4565
+        },
+        {
+            "month_name": "Sep",
+            "1996-2025": 27.11,
+            "2026-2055": 27.3447,
+            "shift_c": 0.2347,
+            "pct_change": 0.8658
+        },
+        {
+            "month_name": "Oct",
+            "1996-2025": 25.7754,
+            "2026-2055": 25.7517,
+            "shift_c": -0.0237,
+            "pct_change": -0.0918
+        },
+        {
+            "month_name": "Nov",
+            "1996-2025": 22.9648,
+            "2026-2055": 22.6992,
+            "shift_c": -0.2656,
+            "pct_change": -1.1567
+        },
+        {
+            "month_name": "Dec",
+            "1996-2025": 19.7053,
+            "2026-2055": 19.2827,
+            "shift_c": -0.4226,
+            "pct_change": -2.1447
+        }
+    ],
+    "interpretation": "This graph compares monthly average temperature in Chhukha between the historical period (1996–2025) and the projected period (2026–2055). The projected series stays close to the historical seasonal pattern, with slight increases in some months and small decreases in others, indicating that future temperature change is likely to vary by month rather than rise uniformly across the year.",
+    "figure": {
+        "data": [
+            {
+                "hovertemplate": "Percentage change<br>Month: %{x}<br>Value: %{y:.3f}%<extra></extra>",
+                "legendrank": 3,
+                "marker": {
+                    "color": "orange",
+                    "opacity": 0.8
+                },
+                "name": "Percentage change (%)",
+                "width": 0.35,
+                "x": [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec"
+                ],
+                "y": [
+                    0.655840446633279,
+                    0.1803733050832292,
+                    -0.06175218104635789,
+                    0.8597593012121794,
+                    -2.2428471752354047,
+                    0.4302503327623076,
+                    -1.107289330112726,
+                    0.4564987666735053,
+                    0.8658254997415208,
+                    -0.09177373889933946,
+                    -1.1566578301613286,
+                    -2.1447425314262953
+                ],
+                "type": "bar",
+                "xaxis": "x",
+                "yaxis": "y2"
+            },
+            {
+                "hovertemplate": "Historical<br>Month: %{x}<br>Tavg: %{y:.3f} °C<extra></extra>",
+                "legendrank": 1,
+                "line": {
+                    "color": "blue",
+                    "width": 1.4
+                },
+                "marker": {
+                    "color": "blue",
+                    "size": 4,
+                    "symbol": "circle"
+                },
+                "mode": "lines+markers",
+                "name": "Historical",
+                "x": [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec"
+                ],
+                "y": [
+                    18.391317204301075,
+                    20.585903119868636,
+                    23.556451612903228,
+                    25.252055555555554,
+                    26.372177419354838,
+                    27.140833333333333,
+                    27.306424731182798,
+                    27.633709677419354,
+                    27.109972222222222,
+                    25.77540322580645,
+                    22.964777777777776,
+                    19.705306451612902
+                ],
+                "type": "scatter",
+                "xaxis": "x",
+                "yaxis": "y"
+            },
+            {
+                "hovertemplate": "Forecast<br>Month: %{x}<br>Tavg: %{y:.3f} °C<extra></extra>",
+                "legendrank": 2,
+                "line": {
+                    "color": "red",
+                    "dash": "dash",
+                    "width": 1.4
+                },
+                "marker": {
+                    "color": "red",
+                    "size": 4,
+                    "symbol": "circle"
+                },
+                "mode": "lines+markers",
+                "name": "Forecast",
+                "x": [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec"
+                ],
+                "y": [
+                    18.511934901195506,
+                    20.623034593707175,
+                    23.54190499025513,
+                    25.46916245194171,
+                    25.78068978305677,
+                    27.257606859064463,
+                    27.004063603699148,
+                    27.75985722128291,
+                    27.344697274695065,
+                    25.751748174549746,
+                    22.69915387743196,
+                    19.28267836319727
+                ],
+                "type": "scatter",
+                "xaxis": "x",
+                "yaxis": "y"
+            },
+            {
+                "hoverinfo": "skip",
+                "line": {
+                    "color": "gray",
+                    "width": 0.5
+                },
+                "mode": "lines",
+                "showlegend": false,
+                "x": [
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec"
+                ],
+                "y": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "type": "scatter",
+                "xaxis": "x",
+                "yaxis": "y2"
+            }
+        ],
+        "layout": {
+            "template": {
+                "data": {
+                    "scatter": [
+                        {
+                            "type": "scatter"
+                        }
+                    ]
+                }
+            },
+            "xaxis": {
+                "anchor": "y",
+                "domain": [
+                    0.0,
+                    0.94
+                ],
+                "title": {
+                    "text": "Month"
+                },
+                "showgrid": false,
+                "zeroline": false,
+                "showline": true,
+                "linecolor": "black",
+                "ticks": "outside",
+                "tickcolor": "black",
+                "tickangle": 35
+            },
+            "yaxis": {
+                "anchor": "x",
+                "domain": [
+                    0.0,
+                    1.0
+                ],
+                "title": {
+                    "text": "Temperature (°C)"
+                },
+                "showgrid": false,
+                "zeroline": false,
+                "showline": true,
+                "linecolor": "black",
+                "ticks": "outside",
+                "tickcolor": "black"
+            },
+            "yaxis2": {
+                "anchor": "x",
+                "overlaying": "y",
+                "side": "right",
+                "title": {
+                    "text": "Percentage Change (%)"
+                },
+                "showgrid": false,
+                "zeroline": false,
+                "showline": true,
+                "linecolor": "black",
+                "ticks": "outside",
+                "tickcolor": "black"
+            },
+            "font": {
+                "color": "black",
+                "size": 11
+            },
+            "legend": {
+                "orientation": "h",
+                "yanchor": "top",
+                "y": -0.12,
+                "xanchor": "center",
+                "x": 0.5,
+                "bgcolor": "rgba(0,0,0,0)",
+                "borderwidth": 0
+            },
+            "margin": {
+                "l": 60,
+                "r": 60,
+                "t": 30,
+                "b": 90
+            },
+            "title": {},
+            "width": 1000,
+            "height": 500,
+            "hovermode": "x unified",
+            "dragmode": "pan",
+            "plot_bgcolor": "white",
+            "paper_bgcolor": "white",
+            "bargap": 0.35
+        }
+    }
+}

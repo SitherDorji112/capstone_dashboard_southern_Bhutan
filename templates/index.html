@@ -1,0 +1,346 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historical and Projected Climate Dashboard for Southern Bhutan</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <button class="mobile-menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">
+            ☰
+        </button>
+        <div class="nav-brand">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" class="navbar-logo">
+            <div class="logo-icon">☁️</div>
+            <h1>Historical and Projected Climate Dashboard for Southern Bhutan</h1>
+        </div>
+
+        <div class="nav-links">
+            <a href="/" class="active">Home</a>
+            <a href="/dashboard/">Dashboard</a>
+            <a href="/about/">About Us</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="home-hero">
+        <div class="home-overlay"></div>
+
+        <div class="home-content">
+            <div class="hero-left">
+                <p class="welcome-text"></p>
+
+                <h2>
+                    Welcome to <br>
+                    Historical and Projected
+                    Climate Dashboard <br>
+                    for Southern Bhutan
+                </h2>
+
+                <h3></h3>
+
+                <p class="hero-description">
+                    This dashboard presents historical climate trends from 1996–2025 and projected
+                    climate patterns from 2026–2055 for five southern Dzongkhags of Bhutan. Explore
+                    temperature and rainfall variations, decadal shifts, and extreme climate events
+                    through interactive visualizations.
+                </p>
+
+            </div>
+
+            <div class="hero-right">
+                <div class="hero-map-frame">
+                    <div
+                        id="home-geojson-map"
+                        class="home-geojson-map"
+                        data-geojson-url="{% static 'data/southern_bhutan_map.geojson' %}"
+                    ></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="home-kpi-grid">
+            <div class="home-kpi-card kpi-blue">
+                <div class="kpi-icon-circle">🗓️</div>
+                <div class="kpi-content">
+                    <div class="kpi-title">Historical Period</div>
+                    <div class="kpi-value">1996–2025</div>
+                    <div class="kpi-underline"></div>
+                    <div class="kpi-meta"><span class="kpi-meta-icon kpi-meta-icon-circle blue">🕘</span><span>30 Years</span></div>
+                </div>
+                <div class="kpi-bg-shape"></div>
+            </div>
+
+            <div class="home-kpi-card kpi-green">
+                <div class="kpi-icon-circle">🗓️</div>
+                <div class="kpi-content">
+                    <div class="kpi-title">Projected Period</div>
+                    <div class="kpi-value">2026–2055</div>
+                    <div class="kpi-underline"></div>
+                    <div class="kpi-meta"><span class="kpi-meta-icon kpi-meta-icon-circle green">🕘</span><span>30 Years</span></div>
+                </div>
+                <div class="kpi-bg-shape"></div>
+            </div>
+
+            <div class="home-kpi-card kpi-purple">
+                <div class="kpi-icon-circle">📍</div>
+                <div class="kpi-content">
+                    <div class="kpi-title">Study Area</div>
+                    <div class="kpi-value">5 Southern<br>Dzongkhags</div>
+                    <div class="kpi-underline"></div>
+                    <div class="kpi-meta"><span class="kpi-meta-icon kpi-meta-icon-circle purple">📍</span><span>Bhutan</span></div>
+                </div>
+                <div class="kpi-bg-shape"></div>
+            </div>
+
+            <div class="home-kpi-card kpi-orange">
+                <div class="kpi-icon-circle">🌡️</div>
+                <div class="kpi-content">
+                    <div class="kpi-title">Variables</div>
+                    <div class="kpi-value">Rainfall, Tmax,<br>Tmin, Tavg</div>
+                    <div class="kpi-underline"></div>
+                    <div class="kpi-meta"><span class="kpi-meta-icon kpi-meta-icon-circle orange">📊</span><span>Climate Indicators</span></div>
+                </div>
+                <div class="kpi-bg-bars"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Historical and Projected Climate Dashboard for Southern Bhutan. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const mapBox = document.getElementById("home-geojson-map");
+            if (!mapBox) return;
+
+            const geojsonUrl = mapBox.dataset.geojsonUrl;
+
+            const southernDzongkhags = {
+                "chhukha": "Chhukha",
+                "samtse": "Samtse",
+                "sarpang": "Sarpang",
+                "pemagatshel": "Pemagatshel",
+                "samdrup jongkhar": "Samdrup\nJongkhar",
+                "samdrup_jongkhar": "Samdrup\nJongkhar"
+            };
+
+            function getFeatureName(feature) {
+                const props = feature.properties || {};
+
+                const possibleKeys = [
+                    "Dzongkhag",
+                    "DZONGKHAG",
+                    "dzongkhag",
+                    "NAME",
+                    "Name",
+                    "name",
+                    "district",
+                    "District",
+                    "ADM1_NAME",
+                    "ADM2_NAME"
+                ];
+
+                for (const key of possibleKeys) {
+                    if (props[key]) {
+                        return String(props[key]).trim();
+                    }
+                }
+
+                return "";
+            }
+
+            function normalizeName(name) {
+                return String(name)
+                    .toLowerCase()
+                    .replace(/_/g, " ")
+                    .replace(/\s+/g, " ")
+                    .trim();
+            }
+
+            function collectCoordinates(geometry, output) {
+                if (!geometry) return;
+
+                if (geometry.type === "Polygon") {
+                    geometry.coordinates.forEach(ring => {
+                        ring.forEach(coord => output.push(coord));
+                    });
+                }
+
+                if (geometry.type === "MultiPolygon") {
+                    geometry.coordinates.forEach(polygon => {
+                        polygon.forEach(ring => {
+                            ring.forEach(coord => output.push(coord));
+                        });
+                    });
+                }
+            }
+
+            function polygonToPath(rings, project) {
+                return rings.map(ring => {
+                    return ring.map((coord, index) => {
+                        const [x, y] = project(coord);
+                        return `${index === 0 ? "M" : "L"}${x.toFixed(2)},${y.toFixed(2)}`;
+                    }).join(" ") + " Z";
+                }).join(" ");
+            }
+
+            function geometryToPath(geometry, project) {
+                if (!geometry) return "";
+
+                if (geometry.type === "Polygon") {
+                    return polygonToPath(geometry.coordinates, project);
+                }
+
+                if (geometry.type === "MultiPolygon") {
+                    return geometry.coordinates
+                        .map(polygon => polygonToPath(polygon, project))
+                        .join(" ");
+                }
+
+                return "";
+            }
+
+            function getFeatureCenter(feature, project) {
+                const coords = [];
+                collectCoordinates(feature.geometry, coords);
+
+                if (!coords.length) return [0, 0];
+
+                let minLon = Infinity;
+                let maxLon = -Infinity;
+                let minLat = Infinity;
+                let maxLat = -Infinity;
+
+                coords.forEach(([lon, lat]) => {
+                    minLon = Math.min(minLon, lon);
+                    maxLon = Math.max(maxLon, lon);
+                    minLat = Math.min(minLat, lat);
+                    maxLat = Math.max(maxLat, lat);
+                });
+
+                return project([
+                    (minLon + maxLon) / 2,
+                    (minLat + maxLat) / 2
+                ]);
+            }
+
+            fetch(geojsonUrl)
+                .then(response => response.json())
+                .then(geojson => {
+                    const features = geojson.features || [];
+                    const allCoords = [];
+
+                    features.forEach(feature => {
+                        collectCoordinates(feature.geometry, allCoords);
+                    });
+
+                    if (!allCoords.length) return;
+
+                    const width = 1000;
+                    const height = 430;
+                    const padding = 22;
+
+                    const lons = allCoords.map(c => c[0]);
+                    const lats = allCoords.map(c => c[1]);
+
+                    const minLon = Math.min(...lons);
+                    const maxLon = Math.max(...lons);
+                    const minLat = Math.min(...lats);
+                    const maxLat = Math.max(...lats);
+
+                    const scaleX = (width - padding * 2) / (maxLon - minLon);
+                    const scaleY = (height - padding * 2) / (maxLat - minLat);
+                    const scale = Math.min(scaleX, scaleY);
+
+                    const mapWidth = (maxLon - minLon) * scale;
+                    const mapHeight = (maxLat - minLat) * scale;
+
+                    const offsetX = (width - mapWidth) / 2;
+                    const offsetY = (height - mapHeight) / 2;
+
+                    function project(coord) {
+                        const lon = coord[0];
+                        const lat = coord[1];
+
+                        const x = offsetX + (lon - minLon) * scale;
+                        const y = offsetY + (maxLat - lat) * scale;
+
+                        return [x, y];
+                    }
+
+                    const svgNS = "http://www.w3.org/2000/svg";
+
+                    const svg = document.createElementNS(svgNS, "svg");
+                    svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+                    svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+                    svg.classList.add("home-map-svg");
+
+                    features.forEach(feature => {
+                        const name = getFeatureName(feature);
+                        const normalized = normalizeName(name);
+                        const isSouthern = Object.prototype.hasOwnProperty.call(
+                            southernDzongkhags,
+                            normalized
+                        );
+
+                        const path = document.createElementNS(svgNS, "path");
+                        path.setAttribute("d", geometryToPath(feature.geometry, project));
+                        path.setAttribute("class", isSouthern ? "map-district southern" : "map-district other");
+                        svg.appendChild(path);
+                    });
+
+                    features.forEach(feature => {
+                        const name = getFeatureName(feature);
+                        const normalized = normalizeName(name);
+
+                        if (!Object.prototype.hasOwnProperty.call(southernDzongkhags, normalized)) {
+                            return;
+                        }
+
+                        const [x, y] = getFeatureCenter(feature, project);
+
+                        const label = document.createElementNS(svgNS, "text");
+                        label.setAttribute("x", x);
+                        label.setAttribute("y", y);
+                        label.setAttribute("class", "map-label");
+                        label.setAttribute("text-anchor", "middle");
+                        label.setAttribute("dominant-baseline", "middle");
+
+                        const labelText = southernDzongkhags[normalized];
+
+                        if (labelText.includes("\n")) {
+                            const lines = labelText.split("\n");
+
+                            lines.forEach((line, index) => {
+                                const tspan = document.createElementNS(svgNS, "tspan");
+                                tspan.setAttribute("x", x);
+                                tspan.setAttribute("dy", index === 0 ? "-0.35em" : "1.1em");
+                                tspan.textContent = line;
+                                label.appendChild(tspan);
+                            });
+                        } else {
+                            label.textContent = labelText;
+                        }
+
+                        svg.appendChild(label);
+                    });
+
+                    mapBox.innerHTML = "";
+                    mapBox.appendChild(svg);
+                })
+                .catch(error => {
+                    console.error("Failed to load Home GeoJSON map:", error);
+                });
+        });
+    </script>
+    <script src="{% static 'js/dashboard.js' %}"></script>
+</body>
+</html>

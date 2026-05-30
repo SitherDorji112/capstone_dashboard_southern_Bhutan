@@ -1,0 +1,47 @@
+{
+    "pemagatshel": {
+        "name": "Pemagatshel",
+        "display_name": "PEMAGATSHEL",
+        "longitude": 91.44,
+        "latitude": 27.03,
+        "area_km2": 1022.10,
+        "area_display": "1,022.10 km²",
+        "elevation": "1,000–3,500 m asl"
+    },
+    "chhukha": {
+        "name": "Chhukha",
+        "display_name": "CHHUKHA",
+        "longitude": 89.39,
+        "latitude": 26.85,
+        "area_km2": 1879.50,
+        "area_display": "1,879.50 km²",
+        "elevation": "200–3,500 m asl"
+    },
+    "samtse": {
+        "name": "Samtse",
+        "display_name": "SAMTSE",
+        "longitude": 88.88,
+        "latitude": 27.01,
+        "area_km2": 1309.10,
+        "area_display": "1,309.10 km²",
+        "elevation": "200–4,400 m asl"
+    },
+    "sarpang": {
+        "name": "Sarpang",
+        "display_name": "SARPANG",
+        "longitude": 90.43,
+        "latitude": 26.91,
+        "area_km2": 1655.00,
+        "area_display": "1,655.00 km²",
+        "elevation": "200–3,600 m asl"
+    },
+    "samdrup_jongkhar": {
+        "name": "Samdrup Jongkhar",
+        "display_name": "SAMDRUP JONGKHAR",
+        "longitude": 91.46,
+        "latitude": 26.86,
+        "area_km2": 1877.67,
+        "area_display": "1,877.67 km²",
+        "elevation": "200–3,500 m asl"
+    }
+}

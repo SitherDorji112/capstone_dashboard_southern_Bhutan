@@ -1,0 +1,184 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Climate Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="about-page">
+    <nav class="navbar">
+        <button class="mobile-menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">
+            ☰
+        </button>
+        <div class="nav-brand">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" class="navbar-logo">
+            <div class="logo-icon">☁️</div>
+            <h1>Historical and Projected Climate Dashboard for Southern Bhutan</h1>
+        </div>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/dashboard/">Dashboard</a>
+            <a href="/about/" class="active">About Us</a>
+        </div>
+    </nav>
+
+    <main class="about-main">
+        <section class="about-hero">
+            <div class="about-hero-content">
+                <h1>About the Project</h1>
+                <p>
+                    This project uses climate data collected from the National Center for Hydrology
+                    and Meteorology (NCHM) to analyse historical rainfall and temperature patterns in
+                    five southern Dzongkhags of Bhutan. The aim is to provide a clear dashboard for
+                    understanding climate trends, extreme events, and projected changes from
+                    2026&ndash;2055 to support climate awareness, planning, and decision-making.
+                </p>
+            </div>
+            <div class="about-hero-image"></div>
+        </section>
+
+        <section class="about-panel methodology-panel">
+            <div class="section-title">
+                <h2>Data and Methodology</h2>
+            </div>
+
+            <div class="methodology-grid">
+                <div class="methodology-card">
+                    <div class="methodology-icon">📊</div>
+                    <div>
+                        <h3>Historical Data Analysis</h3>
+                        <p>
+                            Historical climate data spanning 1996-2025 is analyzed using
+                            <strong>Mann-Kendall trend analysis</strong> and
+                            <strong>Sen's slope estimator</strong> to quantify significant
+                            trends in rainfall and temperature patterns.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="methodology-card">
+                    <div class="methodology-icon">📈</div>
+                    <div>
+                        <h3>Trend Analysis</h3>
+                        <ul>
+                            <li><strong>Mann-Kendall Test:</strong> Detects monotonic trends in time series data</li>
+                            <li><strong>Sen's Slope:</strong> Provides non-parametric estimation of trend magnitude</li>
+                            <li><strong>p-value:</strong> Indicates statistical significance of detected trends</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="methodology-card">
+                    <div class="methodology-icon">🌧️</div>
+                    <div>
+                        <h3>Climate Projections</h3>
+                        <p>
+                            Future climate patterns (2026-2055) are projected using the
+                            <strong>CNN-BiLSTM</strong> (Convolutional Neural Network -
+                            Bidirectional Long Short-Term Memory) deep learning model,
+                            combining convolutional feature extraction with recurrent neural
+                            network capabilities for robust climate forecasting.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="methodology-card">
+                    <div class="methodology-icon">🎯</div>
+                    <div>
+                        <h3>Model Performance Evaluation</h3>
+                        <p>
+                            The CNN-BiLSTM model delivers reliable climate forecasts across Southern Bhutan by
+                            effectively learning complex rainfall and temperature patterns from historical data.
+                            Its strong predictive performance supports accurate climate projections, helping 
+                            users better understand future rainfall and temperature trends across the five study
+                            dzongkhags.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-panel guidance-panel">
+            <div class="section-title icon-title orange-title">
+                <div class="section-icon">🎓</div>
+                <h2>Guidance & Support</h2>
+            </div>
+
+            <div class="guidance-grid">
+                <div class="guidance-card supervisor-card">
+                    <img src="{% static 'images/supervisor.jpeg' %}" alt="Dr. Phub Namgay">
+                    <div>
+                        <h3>Dr. Phub Namgay</h3>
+                        <p>Supervisor <br>
+                            Email: phubnamgay.sherubtse@rub.edu.bt</p>
+                    </div>
+                </div>
+
+                <div class="guidance-card cosupervisor-card">
+                    <img src="{% static 'images/co_supervisor.jpeg' %}" alt="Mr. Tenzin Wangchuk">
+                    <div>
+                        <h3>Mr. Tenzin Wangchuk</h3>
+                        <p>Co-supervisor <br>
+                            Email: tenzinwangs777@gmail.com
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-panel team-panel">
+            <div class="section-title icon-title purple-title">
+                <div class="section-icon">👥</div>
+                <h2>Our Team</h2>
+            </div>
+
+            <div class="team-grid">
+                <div class="team-card">
+                    <img src="{% static 'images/member_1.jpeg' %}" alt="Mr. Neten Dorji">
+                    <h3>Mr. Neten Dorji </h3>
+                    <p>Email: dorjineten183@gmail.com</p>
+                </div>
+
+                <div class="team-card">
+                    <img src="{% static 'images/member_2.jpeg' %}" alt="Mr. Passang Dorji">
+                    <h3>Mr. Passang Dorji </h3>
+                     <p>Email: passangdorge@gmail.com</p>
+                    
+                </div>
+
+                <div class="team-card">
+                    <img src="{% static 'images/member_3.jpg' %}" alt="Mr. Sither Dorji">
+                    <h3>Mr. Sither Dorji </h3>
+                    <p>Email: dorjisither112@gmail.com </p> 
+                </div>
+
+                <div class="team-card">
+                    <img src="{% static 'images/member_4.jpeg' %}" alt="Mr. Sonam Dawa Doya">
+                    <h3>Mr. Sonam Dawa Doya </h3>
+                     <p>Email: sonamdawalhop@gmail.com</p> 
+                </div>
+
+                <div class="team-card">
+                    <img src="{% static 'images/member_5.PNG' %}" alt="Ms. Tshering Pema">
+                    <h3>Ms. Tshering Pema </h3>
+                    <p>Email: tpems2019@gmail.com</p> 
+                    
+                </div>
+            </div>
+        </section>
+
+        <section class="about-quote">
+            <div class="quote-mark">“</div>
+            <p>
+                Climate data today, a sustainable tomorrow.<br>
+                Understanding trends, building resilience.
+            </p>
+            <div class="quote-illustration"></div>
+        </section>
+    </main>
+    <script src="{% static 'js/dashboard.js' %}"></script>
+</body>
+</html>
