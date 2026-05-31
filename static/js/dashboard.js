@@ -89,6 +89,69 @@ function safelyResizePlot(plotDiv, delay = 80) {
     }, delay);
 }
 
+function getPlotWidth(plotDiv) {
+    if (typeof plotDiv === "string") {
+        plotDiv = document.getElementById(plotDiv);
+    }
+
+    if (!plotDiv) return 0;
+
+    const rect = plotDiv.getBoundingClientRect();
+    return Math.round(rect.width || plotDiv.clientWidth || 0);
+}
+
+function waitForStablePlotWidth(plotDiv, stableFrames = 3, timeout = 700) {
+    if (typeof plotDiv === "string") {
+        plotDiv = document.getElementById(plotDiv);
+    }
+
+    if (!plotDiv) return Promise.resolve();
+
+    const start = performance.now();
+    let lastWidth = getPlotWidth(plotDiv);
+    let matchingFrames = lastWidth > 0 ? 1 : 0;
+
+    return new Promise((resolve) => {
+        const check = () => {
+            const width = getPlotWidth(plotDiv);
+
+            if (width > 0 && Math.abs(width - lastWidth) <= 1) {
+                matchingFrames += 1;
+            } else {
+                matchingFrames = width > 0 ? 1 : 0;
+                lastWidth = width;
+            }
+
+            if (matchingFrames >= stableFrames || performance.now() - start >= timeout) {
+                resolve();
+                return;
+            }
+
+            requestAnimationFrame(check);
+        };
+
+        requestAnimationFrame(check);
+    });
+}
+
+async function resizePlotAfterStableWidth(plotDiv, delay = 120) {
+    if (typeof plotDiv === "string") {
+        plotDiv = document.getElementById(plotDiv);
+    }
+
+    if (!plotDiv || !window.Plotly) return;
+
+    await waitForStablePlotWidth(plotDiv);
+
+    try {
+        await Plotly.Plots.resize(plotDiv);
+    } catch (error) {
+        console.warn("Stable-width Plotly resize failed:", error);
+    }
+
+    safelyResizePlot(plotDiv, delay);
+}
+
 window.addEventListener("resize", debounce(() => {
     if (!window.Plotly) return;
 
@@ -1599,6 +1662,35 @@ function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function isAnimationTokenCurrent(plotDiv, token) {
+    return Boolean(plotDiv && token && plotDiv.dataset.animationToken === token);
+}
+
+function invalidateGraphAnimation(card) {
+    if (!card) return;
+
+    const token = `${Date.now()}-${Math.random()}`;
+    const plotDiv = card.querySelector(".plot, .plotly-graph-div, [data-plot]");
+
+    card.dataset.animationToken = token;
+    card.dataset.animationInProgress = "false";
+
+    if (plotDiv) {
+        plotDiv.dataset.animationToken = token;
+    }
+}
+
+async function throttledPlotlyRestyle(plotDiv, payload, traceIndices, token) {
+    if (!isAnimationTokenCurrent(plotDiv, token)) {
+        return false;
+    }
+
+    await Plotly.restyle(plotDiv, payload, traceIndices);
+    await delay(16);
+
+    return isAnimationTokenCurrent(plotDiv, token);
+}
+
 function getLineTracePayload(trace, pointCount) {
     const payload = {};
 
@@ -1685,7 +1777,7 @@ function createAnimatedStartFigure(finalFigure) {
     return startFigure;
 }
 
-async function animateLineTrace(plotDiv, trace, traceIndex) {
+async function animateLineTrace(plotDiv, trace, traceIndex, token) {
     const pointCount = getTraceLength(trace);
 
     if (!pointCount) {
@@ -1696,12 +1788,18 @@ async function animateLineTrace(plotDiv, trace, traceIndex) {
 
     for (let frame = 1; frame <= frames; frame++) {
         const currentPointCount = Math.max(1, Math.ceil((frame / frames) * pointCount));
-        await Plotly.restyle(plotDiv, getLineTracePayload(trace, currentPointCount), [traceIndex]);
-        await delay(16);
+        const shouldContinue = await throttledPlotlyRestyle(
+            plotDiv,
+            getLineTracePayload(trace, currentPointCount),
+            [traceIndex],
+            token
+        );
+
+        if (!shouldContinue) return;
     }
 }
 
-async function animateBarTrace(plotDiv, trace, traceIndex, allowPop = false) {
+async function animateBarTrace(plotDiv, trace, traceIndex, allowPop = false, token) {
     const isHorizontal = trace.orientation === "h";
     const values = isHorizontal ? trace.x : trace.y;
 
@@ -1715,12 +1813,22 @@ async function animateBarTrace(plotDiv, trace, traceIndex, allowPop = false) {
         const progress = frame / frames;
         const animatedValues = getInterpolatedValues(values, progress, allowPop);
         const payload = isHorizontal ? { x: [animatedValues] } : { y: [animatedValues] };
-        await Plotly.restyle(plotDiv, payload, [traceIndex]);
-        await delay(16);
+        const shouldContinue = await throttledPlotlyRestyle(plotDiv, payload, [traceIndex], token);
+
+        if (!shouldContinue) return;
     }
 }
 
-async function renderAnimatedPlot(plotDiv, figure, chartId = "", chartTitle = "") {
+async function renderAnimatedPlot(plotDiv, figure, chartId = "", chartTitle = "", options = {}) {
+    if (typeof plotDiv === "string") {
+        plotDiv = document.getElementById(plotDiv);
+    }
+
+    if (!plotDiv || !window.Plotly) return;
+
+    const token = options.animationToken || `${Date.now()}-${Math.random()}`;
+    plotDiv.dataset.animationToken = token;
+
     const finalFigure = deepCloneFigure(figure);
     finalFigure.layout = applyMobileMonthlyShiftLegendLayout(finalFigure.layout, chartId, {
         chart_id: chartId,
@@ -1737,17 +1845,23 @@ async function renderAnimatedPlot(plotDiv, figure, chartId = "", chartTitle = ""
     );
     safelyResizePlot(plotDiv, 80);
 
+    if (!isAnimationTokenCurrent(plotDiv, token)) return;
+
     const traceOrder = getAnimationTraceOrder(finalFigure.data, animationType);
 
     for (const traceIndex of traceOrder) {
+        if (!isAnimationTokenCurrent(plotDiv, token)) return;
+
         const trace = finalFigure.data[traceIndex];
 
         if (isBarTrace(trace)) {
-            await animateBarTrace(plotDiv, trace, traceIndex, animationType === "extreme_bar");
+            await animateBarTrace(plotDiv, trace, traceIndex, animationType === "extreme_bar", token);
         } else if (isLineTrace(trace)) {
-            await animateLineTrace(plotDiv, trace, traceIndex);
+            await animateLineTrace(plotDiv, trace, traceIndex, token);
         }
     }
+
+    if (!isAnimationTokenCurrent(plotDiv, token)) return;
 
     await Plotly.react(
         plotDiv,
@@ -1756,7 +1870,13 @@ async function renderAnimatedPlot(plotDiv, figure, chartId = "", chartTitle = ""
         plotConfig
     );
 
-    safelyResizePlot(plotDiv, 120);
+    if (!isAnimationTokenCurrent(plotDiv, token)) return;
+
+    if (options.resizeAfterStableWidth) {
+        await resizePlotAfterStableWidth(plotDiv, 120);
+    } else {
+        safelyResizePlot(plotDiv, 120);
+    }
 }
 
 function setupGraphViewportObserver() {
@@ -1776,6 +1896,7 @@ function setupGraphViewportObserver() {
             } else {
                 card.dataset.inViewport = "false";
                 card.dataset.hasAnimatedInViewport = "false";
+                invalidateGraphAnimation(card);
             }
         });
     }, {
@@ -1787,25 +1908,54 @@ function setupGraphViewportObserver() {
 async function runViewportGraphAnimation(card) {
     if (!card) return;
 
-    if (card.dataset.hasAnimatedInViewport === "true") return;
+    if (card.dataset.hasAnimatedInViewport === "true" || card.dataset.animationInProgress === "true") return;
 
     card.dataset.hasAnimatedInViewport = "true";
+    card.dataset.animationInProgress = "true";
 
     const plotDiv = card.querySelector(".plot, .plotly-graph-div, [data-plot]");
-    if (!plotDiv) return;
+    if (!plotDiv) {
+        card.dataset.animationInProgress = "false";
+        return;
+    }
 
     const chartPayload = card.__chartPayload;
 
-    if (!chartPayload || !chartPayload.figure) return;
+    if (!chartPayload || !chartPayload.figure) {
+        card.dataset.animationInProgress = "false";
+        return;
+    }
+
+    const animationToken = `${Date.now()}-${Math.random()}`;
+    card.dataset.animationToken = animationToken;
+    plotDiv.dataset.animationToken = animationToken;
 
     try {
         await renderAnimatedPlot(
             plotDiv,
             chartPayload.figure,
             chartPayload.chart_id,
-            chartPayload.title
+            chartPayload.title,
+            {
+                animationToken,
+                resizeAfterStableWidth: card.dataset.needsSecondResize === "true"
+            }
         );
+
+        if (!isAnimationTokenCurrent(plotDiv, animationToken)) return;
+
+        if (card.dataset.needsSecondResize === "true") {
+            await resizePlotAfterStableWidth(plotDiv, 150);
+        } else {
+            safelyResizePlot(plotDiv, 150);
+        }
+
+        if (card.dataset.needsSecondResize === "true") {
+            safelyResizePlot(plotDiv, 220);
+        }
     } catch (error) {
+        if (!isAnimationTokenCurrent(plotDiv, animationToken)) return;
+
         console.error("Viewport graph animation failed:", error);
 
         await Plotly.newPlot(
@@ -1814,13 +1964,16 @@ async function runViewportGraphAnimation(card) {
             chartPayload.figure.layout,
             plotConfig
         );
-        safelyResizePlot(plotDiv, 120);
-    }
 
-    safelyResizePlot(plotDiv, 150);
-
-    if (card.dataset.needsSecondResize === "true") {
-        safelyResizePlot(plotDiv, 220);
+        if (card.dataset.needsSecondResize === "true") {
+            await resizePlotAfterStableWidth(plotDiv, 120);
+        } else {
+            safelyResizePlot(plotDiv, 120);
+        }
+    } finally {
+        if (card.dataset.animationToken === animationToken) {
+            card.dataset.animationInProgress = "false";
+        }
     }
 }
 
@@ -1842,6 +1995,7 @@ function observeGraphCard(card, chart) {
 
     card.dataset.inViewport = "false";
     card.dataset.hasAnimatedInViewport = "false";
+    invalidateGraphAnimation(card);
 
     graphViewportObserver.observe(card);
 
@@ -2051,7 +2205,10 @@ async function renderPlotlyChart(divId, chartData) {
                     plotElement || divId,
                     finalFigure,
                     chartData.chart_id,
-                    chartData.title
+                    chartData.title,
+                    {
+                        resizeAfterStableWidth: isChhukhaAnalysisChart
+                    }
                 );
             } catch (error) {
                 console.error("Animation failed, rendering normal Plotly graph:", error);
@@ -2061,7 +2218,12 @@ async function renderPlotlyChart(divId, chartData) {
                     finalFigure.layout,
                     plotConfig
                 );
-                safelyResizePlot(plotElement || document.getElementById(divId), 120);
+
+                if (isChhukhaAnalysisChart) {
+                    await resizePlotAfterStableWidth(plotElement || document.getElementById(divId), 120);
+                } else {
+                    safelyResizePlot(plotElement || document.getElementById(divId), 120);
+                }
             }
             return;
         }
@@ -2528,10 +2690,13 @@ function clearPlots(plotIds) {
 
             const card = element.closest('.graph-card');
             if (card) {
+                invalidateGraphAnimation(card);
                 delete card.__chartPayload;
                 delete card.dataset.inViewport;
                 delete card.dataset.hasAnimatedInViewport;
                 delete card.dataset.needsSecondResize;
+                delete card.dataset.animationInProgress;
+                delete card.dataset.animationToken;
             }
         }
         const kpiContainer = document.getElementById(`${id}-kpis`);
