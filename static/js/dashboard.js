@@ -89,6 +89,20 @@ function safelyResizePlot(plotDiv, delay = 80) {
     }, delay);
 }
 
+function safelyResizeVisiblePlots(delay = 350) {
+    setTimeout(() => {
+        if (!window.Plotly) return;
+
+        document.querySelectorAll(".plotly-graph-div").forEach((plot) => {
+            try {
+                Plotly.Plots.resize(plot);
+            } catch (error) {
+                console.warn("District switch Plotly resize failed:", error);
+            }
+        });
+    }, delay);
+}
+
 function getPlotWidth(plotDiv) {
     if (typeof plotDiv === "string") {
         plotDiv = document.getElementById(plotDiv);
@@ -96,8 +110,15 @@ function getPlotWidth(plotDiv) {
 
     if (!plotDiv) return 0;
 
-    const rect = plotDiv.getBoundingClientRect();
-    return Math.round(rect.width || plotDiv.clientWidth || 0);
+    const card = plotDiv.closest(".graph-card");
+    const source = card || plotDiv;
+    const rect = source.getBoundingClientRect();
+    const computedStyle = window.getComputedStyle(source);
+    const horizontalPadding =
+        parseFloat(computedStyle.paddingLeft || "0") +
+        parseFloat(computedStyle.paddingRight || "0");
+
+    return Math.max(0, Math.round((rect.width || source.clientWidth || 0) - horizontalPadding));
 }
 
 function waitForStablePlotWidth(plotDiv, stableFrames = 3, timeout = 700) {
@@ -142,8 +163,16 @@ async function resizePlotAfterStableWidth(plotDiv, delay = 120) {
     if (!plotDiv || !window.Plotly) return;
 
     await waitForStablePlotWidth(plotDiv);
+    const width = getPlotWidth(plotDiv);
 
     try {
+        if (width > 0) {
+            await Plotly.relayout(plotDiv, {
+                width,
+                autosize: true
+            });
+        }
+
         await Plotly.Plots.resize(plotDiv);
     } catch (error) {
         console.warn("Stable-width Plotly resize failed:", error);
@@ -1843,7 +1872,7 @@ async function renderAnimatedPlot(plotDiv, figure, chartId = "", chartTitle = ""
         startFigure.layout,
         plotConfig
     );
-    safelyResizePlot(plotDiv, 80);
+    safelyResizePlot(plotDiv, 220);
 
     if (!isAnimationTokenCurrent(plotDiv, token)) return;
 
@@ -1873,9 +1902,9 @@ async function renderAnimatedPlot(plotDiv, figure, chartId = "", chartTitle = ""
     if (!isAnimationTokenCurrent(plotDiv, token)) return;
 
     if (options.resizeAfterStableWidth) {
-        await resizePlotAfterStableWidth(plotDiv, 120);
+        await resizePlotAfterStableWidth(plotDiv, 220);
     } else {
-        safelyResizePlot(plotDiv, 120);
+        safelyResizePlot(plotDiv, 220);
     }
 }
 
@@ -1945,14 +1974,12 @@ async function runViewportGraphAnimation(card) {
         if (!isAnimationTokenCurrent(plotDiv, animationToken)) return;
 
         if (card.dataset.needsSecondResize === "true") {
-            await resizePlotAfterStableWidth(plotDiv, 150);
+            await resizePlotAfterStableWidth(plotDiv, 260);
         } else {
             safelyResizePlot(plotDiv, 150);
         }
 
-        if (card.dataset.needsSecondResize === "true") {
-            safelyResizePlot(plotDiv, 220);
-        }
+        safelyResizePlot(plotDiv, 260);
     } catch (error) {
         if (!isAnimationTokenCurrent(plotDiv, animationToken)) return;
 
@@ -1966,7 +1993,7 @@ async function runViewportGraphAnimation(card) {
         );
 
         if (card.dataset.needsSecondResize === "true") {
-            await resizePlotAfterStableWidth(plotDiv, 120);
+            await resizePlotAfterStableWidth(plotDiv, 220);
         } else {
             safelyResizePlot(plotDiv, 120);
         }
@@ -2131,58 +2158,8 @@ async function renderPlotlyChart(divId, chartData) {
         }
 
         if (isChhukhaAnalysisChart) {
-            const isMobilePhone = window.innerWidth <= 560;
-
-            cleanLayout.height = isMobilePhone ? 390 : 330;
-
-            cleanLayout.margin = {
-                ...(cleanLayout.margin || {}),
-                t: 8,
-                r: 35,
-                b: isMobilePhone ? 110 : 88,
-                l: 70
-            };
-
-            cleanLayout.legend = {
-                ...(cleanLayout.legend || {}),
-                orientation: "h",
-                x: 0.5,
-                xanchor: "center",
-                y: -0.22,
-                yanchor: "top",
-                font: {
-                    size: 12,
-                    color: "#073b5c"
-                }
-            };
-
-            cleanLayout.xaxis = {
-                ...(cleanLayout.xaxis || {}),
-                showline: true,
-                linecolor: "#000000",
-                linewidth: 1,
-                showgrid: false,
-                zeroline: false,
-                automargin: true,
-                ticks: "outside",
-                ticklen: 5,
-                tickwidth: 1,
-                tickcolor: "#000000"
-            };
-
-            cleanLayout.yaxis = {
-                ...(cleanLayout.yaxis || {}),
-                showline: true,
-                linecolor: "#000000",
-                linewidth: 2,
-                showgrid: false,
-                zeroline: false,
-                automargin: true,
-                ticks: "outside",
-                ticklen: 5,
-                tickwidth: 1,
-                tickcolor: "#000000"
-            };
+            delete cleanLayout.width;
+            cleanLayout.autosize = true;
         }
 
         cleanLayout = addLegendAxisSpacing(cleanLayout);
@@ -2220,7 +2197,7 @@ async function renderPlotlyChart(divId, chartData) {
                 );
 
                 if (isChhukhaAnalysisChart) {
-                    await resizePlotAfterStableWidth(plotElement || document.getElementById(divId), 120);
+                    await resizePlotAfterStableWidth(plotElement || document.getElementById(divId), 220);
                 } else {
                     safelyResizePlot(plotElement || document.getElementById(divId), 120);
                 }
@@ -2289,6 +2266,10 @@ async function loadTemperatureAnalysis(district) {
         renderTemperatureShiftKPIs('decadal-temp-kpis', decadalTemp.kpis);
         await renderPlotlyChart('decadal-temp-plot', decadalTemp);
         document.getElementById('decadal-temp-interpretation').textContent = decadalTemp.interpretation || '';
+    }
+
+    if (district === 'chhukha') {
+        safelyResizeVisiblePlots(350);
     }
 }
 
@@ -2435,6 +2416,10 @@ async function loadRainfallAnalysis(district) {
         renderRainfallShiftKPIs('decadal-rainfall-kpis', decadalRainfall.kpis);
         await renderPlotlyChart('decadal-rainfall-plot', decadalRainfall);
         document.getElementById('decadal-rainfall-interpretation').textContent = decadalRainfall.interpretation || '';
+    }
+
+    if (district === 'chhukha') {
+        safelyResizeVisiblePlots(350);
     }
 }
 

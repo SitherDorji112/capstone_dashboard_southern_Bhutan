@@ -3208,22 +3208,6 @@ body:has(.home-hero) .footer p {
     line-height: 1.55;
 }
 
-.chhukha-chart-card {
-    padding: 24px 28px !important;
-    overflow: visible !important;
-}
-
-.chhukha-chart-card .plotly-plot,
-.chhukha-chart-card .plot {
-    width: 100% !important;
-    height: 330px !important;
-    min-height: 330px !important;
-    max-height: 330px !important;
-    margin-top: 8px !important;
-    margin-bottom: 0 !important;
-    overflow: visible !important;
-}
-
 @media (max-width: 560px) {
     .monthly-shift-card .plotly-plot,
     .monthly-shift-card .plot {
@@ -3234,13 +3218,35 @@ body:has(.home-hero) .footer p {
     }
 }
 
-.chhukha-chart-card .graph-interpretation,
-.chhukha-chart-card .chart-interpretation {
-    margin-top: 14px !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-    clear: both !important;
+@media (min-width: 768px) and (max-width: 1199px) {
+    .graph-card,
+    .chhukha-chart-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow: visible !important;
+    }
+
+    .graph-card .plotly-plot,
+    .graph-card .plot,
+    .graph-card .plotly-graph-div,
+    .graph-card .js-plotly-plot,
+    .graph-card .plot-container,
+    .graph-card .svg-container,
+    .graph-card .main-svg,
+    .chhukha-chart-card .plotly-plot,
+    .chhukha-chart-card .plot,
+    .chhukha-chart-card .plotly-graph-div,
+    .chhukha-chart-card .js-plotly-plot,
+    .chhukha-chart-card .plot-container,
+    .chhukha-chart-card .svg-container,
+    .chhukha-chart-card .main-svg {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        max-height: none !important;
+        overflow: visible !important;
+    }
 }
 
 /* Horizontal trend KPI cards */
@@ -4612,8 +4618,7 @@ img {
         min-height: 44px !important;
     }
 
-    .plotly-plot,
-    .chhukha-chart-card .plotly-plot {
+    .plotly-plot {
         height: 360px !important;
         min-height: 360px !important;
         max-height: none !important;
@@ -4783,8 +4788,7 @@ img {
         display: none !important;
     }
 
-    .plotly-plot,
-    .chhukha-chart-card .plotly-plot {
+    .plotly-plot {
         height: 330px !important;
         min-height: 330px !important;
     }
@@ -4924,8 +4928,7 @@ img {
         padding: 14px !important;
     }
 
-    .plotly-plot,
-    .chhukha-chart-card .plotly-plot {
+    .plotly-plot {
         height: 300px !important;
         min-height: 300px !important;
     }
@@ -5777,23 +5780,13 @@ body.about-page .about-quote {
     .graph-card .plot,
     .graph-card .plotly-graph-div,
     .graph-card .js-plotly-plot,
-    .chhukha-chart-card .plotly-plot,
-    .chhukha-chart-card .plot,
-    .chhukha-chart-card .plotly-graph-div,
-    .chhukha-chart-card .js-plotly-plot {
+    .graph-card .plot-container,
+    .graph-card .svg-container,
+    .graph-card .main-svg {
         width: 100% !important;
         max-width: 100% !important;
         min-width: 0 !important;
         overflow: visible !important;
-    }
-
-    .chhukha-chart-card .plotly-plot,
-    .chhukha-chart-card .plot,
-    .chhukha-chart-card .plotly-graph-div,
-    .chhukha-chart-card .js-plotly-plot {
-        height: 390px !important;
-        min-height: 390px !important;
-        max-height: none !important;
     }
 
     .monthly-temperature-shift-card .plotly-plot,
